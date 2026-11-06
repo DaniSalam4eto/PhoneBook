@@ -1,11 +1,11 @@
 public class ContactController
 {
-    private readonly ContactRepository _repository;
+    private readonly ContactService _service;
     private readonly ContactView _view;
 
-    public ContactController(ContactRepository repository, ContactView view)
+    public ContactController(ContactService service, ContactView view)
     {
-        _repository = repository;
+        _service = service;
         _view = view;
     }
 
@@ -31,32 +31,32 @@ public class ContactController
     private void AddContact()
     {
         string name = _view.Ask("Име");
-        if (string.IsNullOrWhiteSpace(name))
+        if (!_service.IsValidName(name))
         {
             _view.ShowMessage("Името не може да е празно.");
             return;
         }
         string phone = _view.Ask("Телефон");
-        _repository.Add(new Contact { Name = name, Phone = phone });
+        _service.AddContact(name, phone);
         _view.ShowMessage("Контактът е добавен.");
     }
 
     private void SearchContacts()
     {
         string text = _view.Ask("Търсене по име");
-        List<Contact> found = _repository.Search(text);
+        List<Contact> found = _service.SearchContacts(text);
         _view.ShowContacts(found);
     }
 
     private void ShowAllContacts()
     {
-        _view.ShowContacts(_repository.GetAll());
+        _view.ShowContacts(_service.GetAllContacts());
     }
 
     private void DeleteContact()
     {
         string name = _view.Ask("Име за изтриване");
-        if (_repository.Delete(name))
+        if (_service.DeleteContact(name))
         {
             _view.ShowMessage("Контактът е изтрит.");
         }
