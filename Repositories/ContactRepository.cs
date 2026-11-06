@@ -7,6 +7,16 @@ public class ContactRepository
         _contacts.Add(contact);
     }
 
+    public List<Contact> GetAll()
+    {
+        return new List<Contact>(_contacts);
+    }
+
+    public bool Delete(string name)
+    {
+        return _contacts.RemoveAll(contact => contact.Name.Equals(name, StringComparison.OrdinalIgnoreCase)) > 0;
+    }
+
     public List<Contact> Search(string text)
     {
         List<Contact> result = new();

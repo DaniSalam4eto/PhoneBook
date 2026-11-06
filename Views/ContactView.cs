@@ -4,6 +4,8 @@ public class ContactView
     {
         Console.WriteLine("1. Добави контакт");
         Console.WriteLine("2. Търси контакт");
+        Console.WriteLine("3. Покажи всички");
+        Console.WriteLine("4. Изтрий контакт");
         Console.WriteLine("0. Изход");
         Console.WriteLine("Избор: ");
     }

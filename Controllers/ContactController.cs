@@ -20,6 +20,8 @@ public class ContactController
             {
                 case "1": AddContact(); break;
                 case "2": SearchContacts(); break;
+                case "3": ShowAllContacts(); break;
+                case "4": DeleteContact(); break;
                 case "0": running = false; break;
                 default: _view.ShowMessage("Невалиден избор."); break;
             }
@@ -29,6 +31,11 @@ public class ContactController
     private void AddContact()
     {
         string name = _view.Ask("Име");
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            _view.ShowMessage("Името не може да е празно.");
+            return;
+        }
         string phone = _view.Ask("Телефон");
         _repository.Add(new Contact { Name = name, Phone = phone });
         _view.ShowMessage("Контактът е добавен.");
@@ -39,5 +46,23 @@ public class ContactController
         string text = _view.Ask("Търсене по име");
         List<Contact> found = _repository.Search(text);
         _view.ShowContacts(found);
+    }
+
+    private void ShowAllContacts()
+    {
+        _view.ShowContacts(_repository.GetAll());
+    }
+
+    private void DeleteContact()
+    {
+        string name = _view.Ask("Име за изтриване");
+        if (_repository.Delete(name))
+        {
+            _view.ShowMessage("Контактът е изтрит.");
+        }
+        else
+        {
+            _view.ShowMessage("Няма такъв контакт.");
+        }
     }
 }
